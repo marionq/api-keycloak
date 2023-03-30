@@ -1,0 +1,30 @@
+## YAML Template.
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://172.25.254.83:5601/eureka}
+      
+spring:
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: server-config
+      failFast: true
+      #name of base properties config file, before profile
+      name: config-client
+      profile: ${PROFILE:config-client-development}
+      #label: latest
+      username: admin
+      password: qwerty
+      retry: 
+        max-attempts: 1
+        max-interval: 1000
+management: 
+  endpoints:
+    web:
+      exposure:
+        include: "*"  
+  endpoint:
+    health:
+      show-details: ALWAYS
