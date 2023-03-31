@@ -2,9 +2,11 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_SERVER:http://172.25.254.83:5601/eureka}
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
       
 spring:
+  application:
+    name: api-keycloak
   cloud:
     config:
       discovery:
@@ -13,7 +15,7 @@ spring:
       failFast: true
       #name of base properties config file, before profile
       name: config-client
-      profile: ${PROFILE:config-client-development}
+      profile: ${PROFILE:local}
       #label: latest
       username: admin
       password: qwerty
