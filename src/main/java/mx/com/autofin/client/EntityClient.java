@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "api-keycloak")
 public interface EntityClient {
     
-    @GetMapping("/nafin/v1/userdbkeycloak/findbyusernameres/{username}")
+    @GetMapping("/autofin/v1/userdbkeycloak/findbyusernameres/{username}")
     public ResponseEntity<List<UserEntity>> listRespEnt(@PathVariable String username);
 }
