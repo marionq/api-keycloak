@@ -1,5 +1,6 @@
 package mx.com.autofin.controller;
 
+import mx.com.autofin.model.RefreshTokenRequestModel;
 import mx.com.autofin.model.TokenRequestModel;
 import mx.com.autofin.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,13 @@ public class TokenController {
     private TokenService tokenService;
     
     @PostMapping(value = "/gettoken", produces="application/json")
-	public String getAccessToken(@RequestBody TokenRequestModel tokenRequestModel){            
-            return tokenService.getAccessToken(tokenRequestModel);	
+	public ResponseEntity<Object> getAccessToken(@RequestBody TokenRequestModel tokenRequestModel){            
+            return tokenService.getAccessTokenCp(tokenRequestModel);	
+	}
+    
+    @PostMapping(value = "/refreshtoken", produces="application/json")
+	public ResponseEntity<Object> refreshAccessToken(@RequestBody RefreshTokenRequestModel refreshTokenRequestModel){            
+            return tokenService.refreshAccessToken(refreshTokenRequestModel);	
 	}
     
 }

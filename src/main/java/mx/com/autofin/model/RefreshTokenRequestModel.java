@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class TokenRequestModel {
+public class RefreshTokenRequestModel {
     
     @JsonProperty("grant_type")
     private String grantType;
@@ -12,11 +12,10 @@ public class TokenRequestModel {
     @JsonProperty("client_id")
     private String clientId;
     
-    private String username;
-    
-    private String password;
-    
     @JsonProperty("client_secret")
     private String clientSecret;
+    
+    @JsonProperty("refresh_token")
+    private String refreshToken;    
     
 }
