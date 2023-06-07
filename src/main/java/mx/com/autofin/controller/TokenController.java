@@ -1,5 +1,7 @@
 package mx.com.autofin.controller;
 
+import mx.com.autofin.model.InstrospectTokenRequestModel;
+import mx.com.autofin.model.RefreshTokenLogoutRequestModel;
 import mx.com.autofin.model.RefreshTokenRequestModel;
 import mx.com.autofin.model.TokenRequestModel;
 import mx.com.autofin.service.TokenService;
@@ -21,14 +23,24 @@ public class TokenController {
     @Autowired
     private TokenService tokenService;
     
-    @PostMapping(value = "/gettoken", produces="application/json")
+    @PostMapping(value = "/get", produces="application/json")
 	public ResponseEntity<Object> getAccessToken(@RequestBody TokenRequestModel tokenRequestModel){            
             return tokenService.getAccessTokenCp(tokenRequestModel);	
 	}
     
-    @PostMapping(value = "/refreshtoken", produces="application/json")
+    @PostMapping(value = "/refresh", produces="application/json")
 	public ResponseEntity<Object> refreshAccessToken(@RequestBody RefreshTokenRequestModel refreshTokenRequestModel){            
             return tokenService.refreshAccessToken(refreshTokenRequestModel);	
+	}
+        
+    @PostMapping(value = "/logout", produces="application/json")
+	public ResponseEntity<Object> logoutToken(@RequestBody RefreshTokenLogoutRequestModel refreshTokenLogoutRequestModel){            
+            return tokenService.logoutToken(refreshTokenLogoutRequestModel);	
+	}
+        
+    @PostMapping(value = "/introspect", produces="application/json")
+	public ResponseEntity<Object> logoutToken(@RequestBody InstrospectTokenRequestModel instrospectTokenRequestModel){            
+            return tokenService.introstecToken(instrospectTokenRequestModel);	
 	}
     
 }

@@ -1,5 +1,8 @@
 package mx.com.autofin.service;
 
+import mx.com.autofin.model.InstrospectTokenRequestModel;
+import mx.com.autofin.model.InstrospectTokenResponseModel;
+import mx.com.autofin.model.RefreshTokenLogoutRequestModel;
 import mx.com.autofin.model.RefreshTokenRequestModel;
 import mx.com.autofin.model.TokenRequestModel;
 import mx.com.autofin.model.TokenResponseModel;
@@ -23,6 +26,13 @@ public class TokenServiceImpl implements TokenService {
 
     @Value("${keycloak.base-uri.accessToken}")
     private String uriAccessToken;
+    
+    @Value("${keycloak.base-uri.logoutToken}")
+    private String uriLogoutToken;
+    
+    @Value("${keycloak.base-uri.uriIntrospectToken}")
+    private String uriIntrospectToken;
+    
 
     @Override
     public String getAccessToken(TokenRequestModel tokenRequestModel) {
@@ -72,6 +82,41 @@ public class TokenServiceImpl implements TokenService {
             return ResponseHandler.generateResponse("OK", HttpStatus.OK, tokenResponseModel);
         } catch (RestClientException e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.resolve(Integer.parseInt(e.getMessage().split(" ")[0])), refreshTokenRequestModel);
+        }
+    }
+    
+    @Override
+    public ResponseEntity<Object> logoutToken(RefreshTokenLogoutRequestModel refreshTokenLogoutRequestModel) {
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");               
+        String stringRequest = "client_id=" + refreshTokenLogoutRequestModel.getClientId() + "&refresh_token=" + refreshTokenLogoutRequestModel.getRefreshToken() + "&client_secret=" + refreshTokenLogoutRequestModel.getClientSecret();
+        //String stringRequest = "grant_type=password&client_id=front-end-94&username=adminapi&password=Fatguys8";
+        
+        HttpEntity<?> request = new HttpEntity<Object>(stringRequest, headers);
+        
+        try {
+            TokenResponseModel tokenResponseModel = clienteRest.postForObject(uriLogoutToken, request, TokenResponseModel.class);
+            return ResponseHandler.generateResponse("OK", HttpStatus.OK, tokenResponseModel);
+        } catch (RestClientException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.resolve(Integer.parseInt(e.getMessage().split(" ")[0])), refreshTokenLogoutRequestModel);
+        }
+    }
+    
+    
+    @Override
+    public ResponseEntity<Object> introstecToken(InstrospectTokenRequestModel instrospectTokenRequestModel) {
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");               
+        String stringRequest = "client_id=" + instrospectTokenRequestModel.getClientId() + "&token=" + instrospectTokenRequestModel.getToken() + "&client_secret=" + instrospectTokenRequestModel.getClientSecret();
+        //String stringRequest = "grant_type=password&client_id=front-end-94&username=adminapi&password=Fatguys8";
+        
+        HttpEntity<?> request = new HttpEntity<Object>(stringRequest, headers);
+        
+        try {
+            InstrospectTokenResponseModel instrospectTokenResponseModel = clienteRest.postForObject(uriIntrospectToken, request, InstrospectTokenResponseModel.class);
+            return ResponseHandler.generateResponse("OK", HttpStatus.OK, instrospectTokenResponseModel);
+        } catch (RestClientException e) {
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.resolve(Integer.parseInt(e.getMessage().split(" ")[0])), instrospectTokenRequestModel);
         }
     }
 }
